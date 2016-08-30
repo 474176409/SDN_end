@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>topo_left</title>
+    <script type="text/javascript" src="../js/jquery-1.8.0.min.js"></script>
+    <!--<script src="http://libs.baidu.com/jquery/1.7.2/jquery.min.js"></script>-->
+    <script type="text/javascript">
+$(document).ready(function() {
+  $("input.append").live("focus",function() {
+    var size = $("tbody tr").size();
+    $(this).removeClass();
+    $("tbody").append('<tr><td><input type="text" id="src'+size+'" class="append"/></td><td><input type="text" id="dst'+size+'"/></td><td><input type="text" id="time'+size+'" value="10"/></td><td><input type="text" id="flow'+size+'" value="10"/></td><td><span id="path'+size+'"></span></td></tr>');
+  });
+});
+    </script>
+    <style type="text/css" media="screen">
+input {
+  width: 40px;
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+}
+.path {
+  width: 300px;
+  margin: 0px;
+  padding: 0px;
+}
+    </style>
+  </head>
+  <body>
+    <button id="btn">路径查询</button>
+    <button id="flow">流量查询</button>
+    <form>
+      <table border="1" cellspacing="0"cellpadding="0">
+        <thead><tr>
+            <th>src</th>
+            <th>dst</th>
+            <th>time</th>
+            <th>flow</th>
+            <th class='path'>path</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td><input type="text" id="src0" class="append"/></td>
+              <td><input type="text" id="dst0"/></td>
+              <td><input type="text" id="time0" value="10"/></td>
+              <td><input type="text" id="flow0" value="10"/></td>
+              <td><span id="path0" class='path'></span></td>
+            </tr>
+          </tbody>
+      </table>
+    </form>
+    <script type="text/javascript" charset="utf-8">
+$(document).ready(function(){
+  $("#btn").on("click", function(){
+    var size = $("tbody tr").size();
+    for (var i = 0; i < size - 1; i++) {
+      var src = "#src" + i;
+      var dst = "#dst" + i;
+      var time = "#time" + i;
+      var flow = "#flow" + i;
+      var path = "#path" + i;
+      console.log(dst);
+      htmlobj = $.ajax({url:"/getpath?src=" + $(src).val() + "&dst=" + $(dst).val() + "&time=" + $(time).val() + "&flow=" + $(flow).val(), async:false});
+      $(path).text(htmlobj.responseText)
+    }
+  })
+  $("#flow").on("click", function(){
+    htmlobj = $.ajax({url:"/getflow"});
+  })
+});
+    </script>
+  </body>
+</html>
